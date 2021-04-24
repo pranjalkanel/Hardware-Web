@@ -1,0 +1,49 @@
+﻿@model HardwareWeb.Models.ItemCategory
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>View Category Stock</h1>
+
+<hr />
+<div class="d-flex flex-column">
+    <div class="d-flex">
+        <form asp-action="Index" method="post">
+            <label asp-for="Name" class="form-label">Category</label>
+            <select asp-for="CategoryId"
+                    class="form-control"
+                    asp-items="@(new SelectList(ViewBag.ListofCategory,"CategoryId","Name"))"></select>
+            <input id="search" type="submit" value="View Stock" />
+        </form>
+    </div>
+    <div>
+        @if (ViewBag.SearchResults != null)
+        {
+            <div>
+                <table class="table table-responsive">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+
+                    @foreach (var result in ViewBag.SearchResults)
+                    {
+                        <tr>
+                            <td>@result.Name</td>
+                            <td>@result.Description</td>
+                            <td>@result.Price</td>
+                            <td>@result.Quantity</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+        else
+        {
+            <div>
+                <p>@ViewBag.NoData</p>
+            </div>
+        }
+    </div>
+</div>

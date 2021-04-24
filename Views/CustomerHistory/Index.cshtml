@@ -1,0 +1,68 @@
+﻿@model HardwareWeb.Models.Customer
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>View Customer Purchase History</h1>
+
+<hr />
+<div class="d-flex flex-column">
+    <div class="d-flex p-3 m-2">
+        <form asp-action="Index" method="post">
+            <label asp-for="FullName" class="form-label">Customer</label>
+            <select asp-for="CustomerId"
+                    class="form-control"
+                    asp-items="@(new SelectList(ViewBag.CustomerList,"CustomerId","FullName"))"></select>
+            <input id="search" type="submit" value="View Bills" class="btn btn-dark m-3" />
+        </form>
+    </div>
+    @if (ViewBag.Sales != null)
+    {
+        <div class="p-2">
+            @foreach (var sale in ViewBag.Sales)
+            {
+            <div class="p-1 d-flex flex-cloumn border">
+                <div class="p-2 m-1">
+                    Sale Number : @sale.SaleId
+                    Sold By : @sale.User
+                    Customer : @sale.Customer
+                    Sale Date :@sale.SaleDate
+                </div>
+                <div>
+                    <table class="talbe table-responsive">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Price</th>
+                            <th>Unit</th>
+                            <th>Line Total</th>
+                        </tr>
+                        @foreach (var detail in ViewBag.SaleDetails)
+                        {
+                            @if (@sale.SaleId == @detail.SaleId)
+                            {
+                                <tr>
+                                    <td>@detail.ItemName</td>
+                                    <td>@detail.ItemPrice</td>
+                                    <td>@detail.OrderUnit</td>
+                                    <td>@detail.LineTotal</td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                <div style="text-align:end">
+                    <p>Sale Total : @sale.SaleTotal</p>
+                </div>                
+            </div>
+                
+            }
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>
+                @ViewBag.NoData
+            </p>
+        </div>
+    }
+</div>
