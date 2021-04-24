@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,8 @@ namespace HardwareWeb
         }
 
         // GET: HomeController/Details/5
-        public ActionResult Details(int id)
+        [Authorize]
+        public ActionResult Details()
         {
             return View();
         }
