@@ -168,8 +168,6 @@ D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csproj.CoreCompileInputs.cache
-D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.MvcApplicationPartsAssemblyInfo.cache
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Memberships\Create.cshtml.g.cs
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Memberships\Delete.cshtml.g.cs
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Memberships\Details.cshtml.g.cs
@@ -197,3 +195,8 @@ D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Users\Index.cshtml.g.cs
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\ViewCategoryStock\Index.cshtml.g.cs
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\CustomerHistory\Index.cshtml.g.cs
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Accounts\Login.cshtml.g.cs
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Sales\Confirm.cshtml.g.cs
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Sales\Index.cshtml.g.cs
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csproj.CoreCompileInputs.cache
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.MvcApplicationPartsAssemblyInfo.cache

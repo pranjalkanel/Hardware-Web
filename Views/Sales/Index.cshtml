@@ -1,0 +1,79 @@
+﻿@using System.Text.Json;
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Index";
+}
+@model HardwareWeb.ViewModels.NewSaleLineViewModel
+
+
+<h1>Add Items</h1>
+
+<hr />
+<div class="d-flex flex-column">
+    <div class="p-1 m-2">
+        <form asp-action="Index" method="post">
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select asp-for="ItemId"
+                        class="form-control"
+                        asp-items="@(new SelectList(ViewBag.ItemList,"ItemId","Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input asp-for="ItemAmount" />
+                <span asp-validation-for="ItemAmount" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-row">
+                <input id="addItem" class="btn btn-primary" type="submit" value="Add Item" />
+                <a class="btn btn-danger" asp-controller="Sales" asp-action="Clear">Clear Items</a>
+            </div>
+        </form>
+        <div>
+            <span class="text-danger">@ViewBag.StockMessage</span>
+        </div>
+    </div>
+    <div class="p-1 m-2">
+        <table class="table table-responsive">
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Line Total</th>
+            </tr>
+            @*@if (HttpContextAccessor.HttpContext.Session.GetString("ItemBufferList") != null)
+                {
+                    <tr>
+                        <td>
+                            @HttpContextAccessor.HttpContext.Session.Get("ItemBufferList")
+                        </td>
+                    </tr>
+
+                }*@
+
+            @if (ViewBag.ItemBufferList != null)
+            {
+                @foreach (var obj in ViewBag.ItemBufferList)
+                {
+                    <tr>
+                        <td>@obj.ItemName</td>
+                        <td>@obj.SaleAmount</td>
+                        <td>@obj.ItemRate</td>
+                        <td>@obj.LineTotal</td>
+
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    @if (HttpContextAccessor.HttpContext.Session.GetString("ItemBufferList") != null)
+    {
+        <div>
+            <a class="btn btn-primary">Confirm Order</a>
+        </div>
+    }
+</div>

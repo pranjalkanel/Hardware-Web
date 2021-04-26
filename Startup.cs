@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HardwareWeb.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace HardwareWeb
 {
@@ -24,10 +27,29 @@ namespace HardwareWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth",config =>
+                {
+                    config.Cookie.Name = "Auth.Cookie";
+                    config.LoginPath = "/Accounts/Login";
+                });
+
+            services.AddAuthorization(options => {
+                options.AddPolicy("AdminRolePolicy", policy => policy.RequireClaim("UserGroup", "admin"));
+            });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
+            services.AddDistributedMemoryCache();
+            services.AddSession(
+                options =>
+                {
+                    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+                });
 
             services.AddDbContext<HardwareContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +65,13 @@ namespace HardwareWeb
             }
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            //app.UseIdentity();
 
             app.UseAuthorization();
 
