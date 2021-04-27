@@ -3,57 +3,84 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+<h1>Items</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-success" asp-action="Create">Add Item</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryNavigation.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    <form asp-action="SortBy">
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Sort By</label>
+                <select onchange="this.form.submit()" name="sortOption" id="sortOption" class="form-control">
+                    <option value="0">------</option>
+                    <option value="1">Name</option>
+                    <option value="2">Quantity</option>
+                    <option value="3">Stock Date</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryNavigation)
+                </th>
+                <th>
+                    Last Stock
+                </th>
+                <th> Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryNavigation.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stocks.LastOrDefault().PurchaseDate)
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-info m-1" asp-action="Edit" asp-route-id="@item.ItemId">Edit</a>
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRolePolicy")).Succeeded)
+                        {
+                            <a class="btn btn-outline-danger m-1" asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

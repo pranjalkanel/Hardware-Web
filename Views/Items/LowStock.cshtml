@@ -1,0 +1,42 @@
+﻿@model IEnumerable<HardwareWeb.Models.Item>
+@{
+    ViewData["Title"] = "LowStock";
+}
+
+
+<h1>
+    Items Running Low on Stock
+</h1>
+
+<hr />
+
+<div class="p-3 m-2">
+    <table class="table border">
+        <tr>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Item Description
+            </th>
+            <th> Item Category</th>
+            <th class="text-danger">
+                In Stock
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.CategoryNavigation.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+            </tr>
+        }
+
+    </table>
+</div>

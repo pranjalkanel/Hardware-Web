@@ -23,7 +23,7 @@ namespace HardwareWeb.Controllers
         // GET: Items
         public async Task<IActionResult> Index()
         {
-            var hardwareContext = _context.Items.Include(i => i.CategoryNavigation);
+            var hardwareContext = _context.Items.Include(i => i.CategoryNavigation).Include(x => x.Stocks).OrderBy(q => q.Quantity);
             return View(await hardwareContext.ToListAsync());
         }
 
@@ -153,9 +153,37 @@ namespace HardwareWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ItemExists(int id)
+        [Authorize]
+        public async Task<IActionResult> LowStock()
+        {
+            var lowItems = _context.Items.Where(x => x.Quantity<10).Include(i => i.CategoryNavigation);
+            return View(await lowItems.ToListAsync());
+        }
+            private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.ItemId == id);
+        }
+
+        public async Task<IActionResult> SortBy(int sortOption)
+        {
+            var obj = _context.Items.Include(i => i.CategoryNavigation).Include(x => x.Stocks).OrderBy(q => q.Quantity);
+            if (sortOption == 0)
+            {
+                return View("~/Views/Items/Index.cshtml", await obj.ToListAsync());
+            }
+            else if (sortOption == 1)
+            {
+                obj = _context.Items.Include(i => i.CategoryNavigation).Include(x => x.Stocks).OrderBy(q => q.Name);
+            }
+            else if (sortOption == 2)
+            {
+               obj = _context.Items.Include(i => i.CategoryNavigation).Include(x => x.Stocks).OrderByDescending(q => q.Quantity);
+            }
+            else
+            {
+                obj = _context.Items.Include(i => i.CategoryNavigation).Include(x => x.Stocks).OrderByDescending(q => q.Stocks.FirstOrDefault().PurchaseDate);
+            }
+            return View("~/Views/Items/Index.cshtml", await obj.ToListAsync());
         }
     }
 }

@@ -200,3 +200,4 @@ D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csproj.CoreCompileInputs.cache
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.MvcApplicationPartsAssemblyInfo.cache
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csprojAssemblyReference.cache
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Items\LowStock.cshtml.g.cs

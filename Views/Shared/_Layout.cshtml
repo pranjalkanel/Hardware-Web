@@ -58,7 +58,10 @@
                     </button>
                 </div>
                 <div class="toast-body">
-                    @ViewBag.Message.MessageText
+                    @ViewBag.Message.MessageText <br />
+                    @if (ViewBag.Message.ControllerText != null){
+                        <a class="alert-link" asp-controller="@ViewBag.Message.ControllerText" asp-action="@ViewBag.Message.ControllerMethodText">View Items</a>
+                    }
                 </div>
             </div>
         }

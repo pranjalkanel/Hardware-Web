@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HardwareWeb.Models;
 using Microsoft.AspNetCore.Authorization;
+using HardwareWeb.DataStores;
 
 namespace HardwareWeb.Controllers
 {
@@ -22,6 +23,14 @@ namespace HardwareWeb.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if ( hasLowItems())
+            {
+                NotificationStore notification = new NotificationStore();
+                notification.MessageText = "Some Items Are Running Low on Stock!";
+                notification.ControllerText = "Items";
+                notification.ControllerMethodText = "LowStock";
+                ViewBag.Message = notification;
+            }
             return View();
         }
 
@@ -36,5 +45,23 @@ namespace HardwareWeb.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public bool hasLowItems()
+        {
+            HardwareContext _context = new HardwareContext();
+            var a = _context.Items.Where(x => x.Quantity < 10).ToList();
+            
+
+            if (a.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
     }
 }
