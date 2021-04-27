@@ -38,8 +38,8 @@ namespace HardwareWeb.Controllers
                 var bufferListTmp = HttpContext.Session.GetObjectFromJson<ItemBufferList>("ItemBufferList");
                 itemBufferList = bufferListTmp.List;
                 ViewBag.ItemBufferList = itemBufferList;
+                
             }
-
             return View();
         }
 
@@ -161,6 +161,7 @@ namespace HardwareWeb.Controllers
                     
                 }
                 clearSessionItems();
+                ViewBag.Message = "Sale successful";
                 return RedirectToAction(nameof(Index));
             }
             else
