@@ -1,0 +1,38 @@
+﻿@model HardwareWeb.Models.User
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Update Profile</h1>
+
+<hr />
+
+<div class="d-flex flex-column">
+    <form asp-action="Profile" style="width:50%">
+        <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <input asp-for="UserGroup" type="hidden" value="@Model.UserGroup" class="form-control" />
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
