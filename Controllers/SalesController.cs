@@ -11,6 +11,7 @@ using HardwareWeb.SessionExtensions;
 using Microsoft.AspNetCore.Http;
 //using System.Text.Json;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace HardwareWeb.Controllers
 {
@@ -37,7 +38,6 @@ namespace HardwareWeb.Controllers
                 var bufferListTmp = HttpContext.Session.GetObjectFromJson<ItemBufferList>("ItemBufferList");
                 itemBufferList = bufferListTmp.List;
                 ViewBag.ItemBufferList = itemBufferList;
-                Console.Out.WriteLine(itemBufferList);
             }
 
             return View();
@@ -60,7 +60,6 @@ namespace HardwareWeb.Controllers
                 var bufferListTmp = HttpContext.Session.GetObjectFromJson<ItemBufferList>("ItemBufferList");
                 itemBufferList = bufferListTmp.List;
                 ViewBag.ItemBufferList = itemBufferList;
-                Console.Out.WriteLine(itemBufferList);
             }
             
 
@@ -80,8 +79,6 @@ namespace HardwareWeb.Controllers
 
                     ItemBufferList listObj = new ItemBufferList();
                     listObj.List = itemBufferList;
-                    //HttpContext.Session.SetString("ItemBufferList", JsonSerializer.SerializeObject(new ItemBufferList{ List = itemBufferList}));
-                    //HttpContext.Session.SetString("ItemBufferList", JsonConvert.SerializeObject(new ItemBufferList { List = itemBufferList}));
                     HttpContext.Session.SetObjectAsJson("ItemBufferList",listObj);
                     ViewBag.ItemBufferList = itemBufferList;
                 }
@@ -94,7 +91,7 @@ namespace HardwareWeb.Controllers
             return View();
         }
 
-        public IActionResult Clear()
+        public void clearSessionItems()
         {
             var itemList = _context.Items.ToList();
             itemList.Insert(0, new Item { ItemId = 0, Name = "Select" });
@@ -103,7 +100,100 @@ namespace HardwareWeb.Controllers
             {
                 HttpContext.Session.Remove("ItemBufferList");
             }
+        }
+
+        public IActionResult Clear()
+        {
+            clearSessionItems();
             return View("~/Views/Sales/Index.cshtml");
+        }
+
+        [HttpGet]
+        public IActionResult Confirm()
+        {
+            ConfirmSaleViewModel obj = getObj();
+
+            var customerList = _context.Customers.ToList();
+            customerList.Insert(0, new Customer { CustomerId = 0, FullName = "Select" });
+            ViewBag.CustomerList = customerList;
+
+            
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult  Confirm(ConfirmSaleViewModel inputobj, int UserId)
+        {
+            if (ModelState.IsValid)
+            {
+                Sale sale = new Sale();
+                sale.CustomerId = inputobj.CustomerId;
+                sale.UserId = UserId;
+                sale.SaleTotal = inputobj.SaleTotal;
+                sale.Date = DateTime.Now;
+                sale.Discounted = false;
+
+                _context.Add(sale);
+
+                _context.SaveChanges();
+
+                List<ItemBuffer> saleItems = getObj().ItemList;
+
+                int saleId = 0;
+
+                using (HardwareContext _saleContext = new HardwareContext())
+                {
+                    saleId = _saleContext.Sales
+                                  .OrderByDescending(x => x.Date)
+                                  .FirstOrDefault().SaleId;
+                }
+                    
+
+                foreach (var item in saleItems)
+                {
+                    using (HardwareContext _itemContext = new HardwareContext() )
+                    {
+                        _itemContext.Add(new SaleDetail() { ItemId = item.ItemId, SaleId = saleId, OrderUnit = item.SaleAmount, LineTotal = item.LineTotal });
+                        _itemContext.SaveChanges();
+                    }
+                    
+                }
+                clearSessionItems();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var customerList = _context.Customers.ToList();
+                customerList.Insert(0, new Customer { CustomerId = 0, FullName = "Select" });
+                ViewBag.CustomerList = customerList;
+
+                ConfirmSaleViewModel viewobj = getObj();
+                return View(viewobj);
+            }
+        }
+    
+        public ConfirmSaleViewModel getObj()
+        {
+            int saleTotal = 0;
+
+            ConfirmSaleViewModel obj = new ConfirmSaleViewModel();
+
+            List<ItemBuffer> itemBufferList;
+            var bufferListTmp = HttpContext.Session.GetObjectFromJson<ItemBufferList>("ItemBufferList");
+            itemBufferList = bufferListTmp.List;
+
+            foreach (var line in itemBufferList)
+            {
+                saleTotal = saleTotal + line.LineTotal;
+            }
+
+            obj.SaleTotal = saleTotal;
+            obj.CustomerId = 0;
+            obj.ItemList = itemBufferList;
+
+            return obj;
         }
     }
 }

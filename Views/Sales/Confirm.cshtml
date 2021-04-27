@@ -1,5 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
+    ViewData["Title"] = "Confirm";
 }
+
+@model HardwareWeb.ViewModels.ConfirmSaleViewModel
+
+
+<h1>Confirm Sale</h1>
+
+<hr />
+
+<div class="d-flex flex-column">
+    <div class="p-1 m-2">
+        <form asp-action="Confirm" method="post">
+            <div class="form-group">
+                <label class="form-label">Select Customer</label>
+                <select asp-for="CustomerId"
+                        class="form-control"
+                        asp-items="@(new SelectList(ViewBag.CustomerList,"CustomerId","FullName"))"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <input name="UserId" type="hidden" value="@User.Claims.FirstOrDefault(c => c.Type == "UserId").Value" readonly class="form-control" />
+
+                <div>
+                    <table class="table border">
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Rate</th>
+                            <th>Line Total</th>
+                        </tr>
+
+                            @foreach (var item in Model.ItemList)
+                            {
+                                <tr>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.SaleAmount</td>
+                                    <td>@item.ItemRate</td>
+                                    <td>@item.LineTotal</td>
+
+                                </tr>
+                            }
+                    </table>
+                </div>
+
+            <div class="form-group m-3">
+                <label class="form-label">Sale Total</label>
+                <input id="saleTotalField" style="border:none" asp-for="SaleTotal" readonly />
+            </div>
+
+            <input class="btn btn-outline-success" type="submit" value="Confrim Sale" />
+        </form> 
+    </div>
+</div>
