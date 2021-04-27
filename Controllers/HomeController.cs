@@ -100,16 +100,9 @@ namespace HardwareWeb.Controllers
             string year = DateTime.Now.AddDays(-31).ToString("yyyy");
             string month = DateTime.Now.AddDays(-31).ToString("MM");
             string day = DateTime.Now.AddDays(-31).ToString("dd");
-            //return _context.Customers.FromSqlRaw("SELECT c.customer_id, c.full_name, c.email, c.phone, c.address, c.membership FROM dbo.customers c " +
-            //    "INNER JOIN" +
-            //    "(SELECT customer_id, MAX(Date) as date FROM dbo.sales " +
-            //    "GROUP BY customer_id HAVING MAX(Date) < CAST('20210328 00:00:00.000' AS DATETIME)) " +
-            //    "AS aliastable ON c.customer_id = aliastable.customer_id; ").ToList();
-            return _context.Customers.FromSqlRaw("SELECT c.customer_id, c.full_name, c.email, c.phone, c.address, c.membership FROM dbo.customers c " +
-                "INNER JOIN" +
-                "(SELECT customer_id, MAX(Date) as date FROM dbo.sales " +
-                $"GROUP BY customer_id HAVING MAX(Date) < CAST('{year}{month}{day} 00:00:00.000' AS DATETIME)) " +
-                "AS aliastable ON c.customer_id = aliastable.customer_id ").ToList();
+
+            return _context.Customers.FromSqlRaw("SELECT * FROM dbo.customers WHERE customer_id " +
+                $"IN (SELECT customer_id FROM dbo.sales GROUP BY customer_id HAVING MAX(Date) < CAST('{year}{month}{day} 00:00:00.000' AS datetime)); ").ToList();
         }
     }
 }

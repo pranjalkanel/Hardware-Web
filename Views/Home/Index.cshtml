@@ -4,33 +4,91 @@
 
 @model HardwareWeb.ViewModels.DashViewModel
 
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
 <h1>Dashboard</h1>
 <hr />
 
 <div class="d-flex flex-column">
     <div class="p-2 m-2">
-        <h3>Items not sold</h3>
-        <table class="table">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>In Stock</th>
-                <th>Price</th>
-                <th></th>
-            </tr>
-
-
-            @foreach (var item in Model.LongStockItemsList)
-            {
+        <h3>Items on stock for 6 Months</h3>
+        <div style="min-height:400px">
+            <table class="table">
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
-                    <td><a class="btn btn-outline-danger m-1" asp-controller="Items" asp-action="Delete" asp-route-id="@item.ItemId">Delete</a></td>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>In Stock</th>
+                    <th>Price</th>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRolePolicy")).Succeeded)
+                    {
+                        <th></th>
+                    }
                 </tr>
-             }
-                
+
+
+                @foreach (var item in Model.LongStockItemsList)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRolePolicy")).Succeeded)
+                        {
+                            <td><a class="btn btn-outline-danger m-1" asp-controller="Items" asp-action="Delete" asp-route-id="@item.ItemId">Delete</a></td>
+                        }
+                    </tr>
+                }
             </table>
+        </div>
+    </div>
+    <div class="p-2 m-2">
+        <h3>Items Not Sold In Past Month</h3>
+        <div style="min-height:400px">
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>In Stock</th>
+                    <th>Price</th>
+                </tr>
+
+
+                @foreach (var item1 in Model.LastMonthItemsList)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item1.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item1.Description)</td>
+                        <td>@Html.DisplayFor(modelItem => item1.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item1.Price)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="p-2 m-2">
+        <h3>Inactive Customers</h3>
+        <div style="min-height:400px">
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+
+
+                @foreach (var item2 in Model.CustomerNoSaleList)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item2.FullName)</td>
+                        <td>@Html.DisplayFor(modelItem => item2.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item2.Phone)</td>
+                        <td>@Html.DisplayFor(modelItem => item2.Address)</td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
 </div>
