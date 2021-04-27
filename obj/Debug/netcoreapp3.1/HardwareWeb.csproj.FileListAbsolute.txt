@@ -2,7 +2,6 @@ D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\bin\Debug\netcoreapp3.1\appsettings.json
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\bin\Debug\netcoreapp3.1\HardwareWeb.exe
-D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csprojAssemblyReference.cache
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.AssemblyInfoInputs.cache
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.AssemblyInfo.cs
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.RazorAssemblyInfo.cache
@@ -200,3 +199,4 @@ D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\Razor\Views\Sales\Index.cshtml.g.cs
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csproj.CoreCompileInputs.cache
 D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.MvcApplicationPartsAssemblyInfo.cache
+D:\Islington\ThirdYear\Application Development\Groupwork\Application\HardwareWeb\obj\Debug\netcoreapp3.1\HardwareWeb.csprojAssemblyReference.cache

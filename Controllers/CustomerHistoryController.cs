@@ -42,7 +42,7 @@ namespace HardwareWeb.Controllers
                 if (sales.Any())
                 {
 
-                    var saleDetails1 = (from detail in _context.SaleDetails
+                    var saleDetails1 = (from detail in _context.SaleDetails 
                                       join item in _context.Items
                                       on detail.ItemId equals item.ItemId
                                       select new {

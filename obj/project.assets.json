@@ -2,6 +2,13 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "Harvest.Chosen/1.4.2": {
+        "type": "package",
+        "dependencies": {
+          "PrototypeJS": "1.7.1",
+          "jQuery": "1.4.0"
+        }
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -10,6 +17,9 @@
         "runtime": {
           "lib/netstandard2.0/Humanizer.dll": {}
         }
+      },
+      "jQuery/1.4.1": {
+        "type": "package"
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
         "type": "package",
@@ -964,6 +974,9 @@
         "runtime": {
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
+      },
+      "PrototypeJS/1.7.1": {
+        "type": "package"
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
@@ -2781,6 +2794,25 @@
     }
   },
   "libraries": {
+    "Harvest.Chosen/1.4.2": {
+      "sha512": "0jNeFvWV79R3ETkmFY6umHe7jGKJj5NAvGb0gV7TBCA3cpxwLIgjaOaHHI5Za2cZplhfgdj2lIRinop4NIS/KQ==",
+      "type": "package",
+      "path": "harvest.chosen/1.4.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Content/chosen-sprite.png",
+        "content/Content/chosen-sprite@2x.png",
+        "content/Content/chosen.css",
+        "content/Content/chosen.min.css",
+        "content/Scripts/chosen.jquery.js",
+        "content/Scripts/chosen.jquery.min.js",
+        "content/Scripts/chosen.proto.js",
+        "content/Scripts/chosen.proto.min.js",
+        "harvest.chosen.1.4.2.nupkg.sha512",
+        "harvest.chosen.nuspec"
+      ]
+    },
     "Humanizer.Core/2.8.26": {
       "sha512": "OiKusGL20vby4uDEswj2IgkdchC1yQ6rwbIkZDVBPIR6al2b7n3pC91elBul9q33KaBgRKhbZH3+2Ur4fnWx2A==",
       "type": "package",
@@ -2795,6 +2827,20 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "jQuery/1.4.1": {
+      "sha512": "03J0RdIC52hnLJzZhRVLs2S6VrzQVysGRxwKLl0Pqsa/+ws+z53rmlM4w8WfWnHqZsZGWh0x4xBTxeJhOBtTRw==",
+      "type": "package",
+      "path": "jquery/1.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Scripts/jquery-1.4.1-vsdoc.js",
+        "Content/Scripts/jquery-1.4.1.js",
+        "Content/Scripts/jquery-1.4.1.min.js",
+        "jquery.1.4.1.nupkg.sha512",
+        "jquery.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -4334,6 +4380,18 @@
         "lib/netstandard1.6/NuGet.Frameworks.xml",
         "nuget.frameworks.4.7.0.nupkg.sha512",
         "nuget.frameworks.nuspec"
+      ]
+    },
+    "PrototypeJS/1.7.1": {
+      "sha512": "csOhM5npkaurfekfSfPa+fekdH1JcfiQxV09UfTVpuhpx+jqjVNvvE75/j8ngf1+hFWdF5KvBNqcVyb7s7OZaA==",
+      "type": "package",
+      "path": "prototypejs/1.7.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Scripts/prototype.js",
+        "prototypejs.1.7.1.nupkg.sha512",
+        "prototypejs.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -8936,6 +8994,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "Harvest.Chosen >= 1.4.2",
       "Microsoft.EntityFrameworkCore.Design >= 5.0.5",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.5",
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.13",
@@ -8981,6 +9040,10 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "Harvest.Chosen": {
+            "target": "Package",
+            "version": "[1.4.2, )"
+          },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
@@ -9031,5 +9094,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Harvest.Chosen 1.4.2 depends on jQuery (>= 1.4.0) but jQuery 1.4.0 was not found. An approximate best match of jQuery 1.4.1 was resolved.",
+      "libraryId": "jQuery",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

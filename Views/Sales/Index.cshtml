@@ -45,15 +45,6 @@
                 <th>Rate</th>
                 <th>Line Total</th>
             </tr>
-            @*@if (HttpContextAccessor.HttpContext.Session.GetString("ItemBufferList") != null)
-                {
-                    <tr>
-                        <td>
-                            @HttpContextAccessor.HttpContext.Session.Get("ItemBufferList")
-                        </td>
-                    </tr>
-
-                }*@
 
             @if (ViewBag.ItemBufferList != null)
             {
