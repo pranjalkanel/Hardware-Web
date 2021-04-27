@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HardwareWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HardwareWeb.Controllers
 {
@@ -18,7 +19,7 @@ namespace HardwareWeb.Controllers
             _context = context;
         }
 
-        // GET: Users
+        [Authorize(Policy = "AdminRolePolicy")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Users.ToListAsync());
@@ -42,7 +43,7 @@ namespace HardwareWeb.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
+        [Authorize(Policy = "AdminRolePolicy")]
         public IActionResult Create()
         {
             return View();
@@ -64,7 +65,7 @@ namespace HardwareWeb.Controllers
             return View(user);
         }
 
-        // GET: Users/Edit/5
+        [Authorize(Policy = "AdminRolePolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,9 +81,7 @@ namespace HardwareWeb.Controllers
             return View(user);
         }
 
-        // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Policy = "AdminRolePolicy")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserId,Name,Email,Password,UserGroup")] User user)
@@ -115,7 +114,7 @@ namespace HardwareWeb.Controllers
             return View(user);
         }
 
-        // GET: Users/Delete/5
+        [Authorize(Policy = "AdminRolePolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +132,7 @@ namespace HardwareWeb.Controllers
             return View(user);
         }
 
-        // POST: Users/Delete/5
+        [Authorize(Policy = "AdminRolePolicy")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HardwareWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HardwareWeb.Controllers
 {
@@ -18,6 +19,7 @@ namespace HardwareWeb.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: Customers
         public async Task<IActionResult> Index()
         {
@@ -25,6 +27,7 @@ namespace HardwareWeb.Controllers
             return View(await hardwareContext.ToListAsync());
         }
 
+        [Authorize]
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,6 +47,7 @@ namespace HardwareWeb.Controllers
             return View(customer);
         }
 
+        [Authorize]
         // GET: Customers/Create
         public IActionResult Create()
         {
@@ -68,6 +72,7 @@ namespace HardwareWeb.Controllers
             return View(customer);
         }
 
+        [Authorize]
         // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -85,6 +90,7 @@ namespace HardwareWeb.Controllers
             return View(customer);
         }
 
+        [Authorize]
         // POST: Customers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -121,6 +127,7 @@ namespace HardwareWeb.Controllers
             return View(customer);
         }
 
+        [Authorize(Policy = "AdminRolePolicy")]
         // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -140,6 +147,7 @@ namespace HardwareWeb.Controllers
             return View(customer);
         }
 
+        [Authorize(Policy = "AdminRolePolicy")]
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

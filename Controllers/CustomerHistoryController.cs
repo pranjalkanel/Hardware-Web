@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using HardwareWeb.Models;
 using Microsoft.EntityFrameworkCore;
 using HardwareWeb.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+
 namespace HardwareWeb.Controllers
 {
     public class CustomerHistoryController : Controller
@@ -16,6 +18,8 @@ namespace HardwareWeb.Controllers
         {
             _context = context;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             var customerList = _context.Customers.ToList();
@@ -24,6 +28,7 @@ namespace HardwareWeb.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(int CustomerId)

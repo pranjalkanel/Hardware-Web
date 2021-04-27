@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HardwareWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HardwareWeb.Controllers
 {
+    
     public class ItemCategoriesController : Controller
     {
         private readonly HardwareContext _context;
@@ -18,12 +20,14 @@ namespace HardwareWeb.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: ItemCategories
         public async Task<IActionResult> Index()
         {
             return View(await _context.ItemCategories.ToListAsync());
         }
 
+        [Authorize]
         // GET: ItemCategories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -42,6 +46,7 @@ namespace HardwareWeb.Controllers
             return View(itemCategory);
         }
 
+        [Authorize]
         // GET: ItemCategories/Create
         public IActionResult Create()
         {
@@ -64,6 +69,7 @@ namespace HardwareWeb.Controllers
             return View(itemCategory);
         }
 
+        [Authorize]
         // GET: ItemCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -80,6 +86,7 @@ namespace HardwareWeb.Controllers
             return View(itemCategory);
         }
 
+        [Authorize]
         // POST: ItemCategories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -115,6 +122,7 @@ namespace HardwareWeb.Controllers
             return View(itemCategory);
         }
 
+        [Authorize(Policy = "AdminRolePolicy")]
         // GET: ItemCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -133,6 +141,7 @@ namespace HardwareWeb.Controllers
             return View(itemCategory);
         }
 
+        [Authorize(Policy = "AdminRolePolicy")]
         // POST: ItemCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

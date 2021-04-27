@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 //using System.Text.Json;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HardwareWeb.Controllers
 {
@@ -23,6 +24,8 @@ namespace HardwareWeb.Controllers
         {
             _context = context;
         }
+
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -43,6 +46,7 @@ namespace HardwareWeb.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(NewSaleLineViewModel obj)
@@ -102,12 +106,14 @@ namespace HardwareWeb.Controllers
             }
         }
 
+        [Authorize]
         public IActionResult Clear()
         {
             clearSessionItems();
             return View("~/Views/Sales/Index.cshtml");
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Confirm()
         {
@@ -122,22 +128,27 @@ namespace HardwareWeb.Controllers
             return View(obj);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult  Confirm(ConfirmSaleViewModel inputobj, int UserId)
         {
             if (ModelState.IsValid)
             {
-                Sale sale = new Sale();
-                sale.CustomerId = inputobj.CustomerId;
-                sale.UserId = UserId;
-                sale.SaleTotal = inputobj.SaleTotal;
-                sale.Date = DateTime.Now;
-                sale.Discounted = false;
+                using (HardwareContext _saleContext = new HardwareContext())
+                {
+                    Sale sale = new Sale();
+                    sale.CustomerId = inputobj.CustomerId;
+                    sale.UserId = UserId;
+                    sale.SaleTotal = inputobj.SaleTotal;
+                    sale.Date = DateTime.Now;
+                    sale.Discounted = false;
 
-                _context.Add(sale);
+                    _saleContext.Add(sale);
 
-                _context.SaveChanges();
+                    _saleContext.SaveChanges();
+                }
+                    
 
                 List<ItemBuffer> saleItems = getObj().ItemList;
 
@@ -147,12 +158,19 @@ namespace HardwareWeb.Controllers
                 {
                     saleId = _saleContext.Sales
                                   .OrderByDescending(x => x.Date)
-                                  .FirstOrDefault().SaleId;
+                                  .First().SaleId;
                 }
                     
 
                 foreach (var item in saleItems)
                 {
+                    using (HardwareContext _updateStockContext = new HardwareContext())
+                    {
+                        (from i in _updateStockContext.Items
+                         where i.ItemId == item.ItemId
+                         select i).ToList().ForEach(x => x.Quantity = (x.Quantity - item.SaleAmount));
+                        _updateStockContext.SaveChanges();
+                    }
                     using (HardwareContext _itemContext = new HardwareContext() )
                     {
                         _itemContext.Add(new SaleDetail() { ItemId = item.ItemId, SaleId = saleId, OrderUnit = item.SaleAmount, LineTotal = item.LineTotal });
@@ -161,8 +179,10 @@ namespace HardwareWeb.Controllers
                     
                 }
                 clearSessionItems();
-                ViewBag.Message = "Sale successful";
-                return RedirectToAction(nameof(Index));
+                NotificationStore notification = new NotificationStore();
+                notification.MessageText = "Sale Successful!";
+                ViewBag.Message = notification;
+                return View("~/Views/Sales/Index.cshtml");
             }
             else
             {

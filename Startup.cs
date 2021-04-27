@@ -35,6 +35,7 @@ namespace HardwareWeb
                 });
 
             services.AddAuthorization(options => {
+                options.AddPolicy("StaffPolicy", policy => policy.RequireClaim("UserGroup"));
                 options.AddPolicy("AdminRolePolicy", policy => policy.RequireClaim("UserGroup", "admin"));
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HardwareWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HardwareWeb.Controllers
 {
@@ -16,6 +17,8 @@ namespace HardwareWeb.Controllers
         {
             _context = context;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             //List<ItemCategory> categoryList = new List<ItemCategory>();
@@ -30,6 +33,7 @@ namespace HardwareWeb.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(int CategoryId)

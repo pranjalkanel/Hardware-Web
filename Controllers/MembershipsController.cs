@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HardwareWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HardwareWeb.Controllers
 {
@@ -18,13 +19,13 @@ namespace HardwareWeb.Controllers
             _context = context;
         }
 
-        // GET: Memberships
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Memberships.ToListAsync());
         }
 
-        // GET: Memberships/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,15 +43,13 @@ namespace HardwareWeb.Controllers
             return View(membership);
         }
 
-        // GET: Memberships/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Memberships/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MembershipId,MembershipName,Description,Discount")] Membership membership)
@@ -64,7 +63,7 @@ namespace HardwareWeb.Controllers
             return View(membership);
         }
 
-        // GET: Memberships/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,9 +79,7 @@ namespace HardwareWeb.Controllers
             return View(membership);
         }
 
-        // POST: Memberships/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MembershipId,MembershipName,Description,Discount")] Membership membership)
@@ -115,7 +112,7 @@ namespace HardwareWeb.Controllers
             return View(membership);
         }
 
-        // GET: Memberships/Delete/5
+        [Authorize(Policy = "AdminRolePolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +130,7 @@ namespace HardwareWeb.Controllers
             return View(membership);
         }
 
-        // POST: Memberships/Delete/5
+        [Authorize(Policy = "AdminRolePolicy")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

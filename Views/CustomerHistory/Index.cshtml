@@ -1,34 +1,42 @@
-﻿@model HardwareWeb.Models.Customer
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
+@model HardwareWeb.Models.Customer
 <h1>View Customer Purchase History</h1>
 
 <hr />
-<div class="d-flex flex-column">
-    <div class="d-flex p-3 m-2">
-        <form asp-action="Index" method="post">
-            <label asp-for="FullName" class="form-label">Customer</label>
-            <select asp-for="CustomerId"
-                    class="form-control"
-                    asp-items="@(new SelectList(ViewBag.CustomerList,"CustomerId","FullName"))"></select>
-            <input id="search" type="submit" value="View Bills" class="btn btn-dark m-3" />
-        </form>
-    </div>
-    @if (ViewBag.Sales != null)
-    {
-        <div class="p-2">
-            @foreach (var sale in ViewBag.Sales)
-            {
-            <div class="p-1 d-flex flex-cloumn border">
-                <div class="p-2 m-1">
-                    Sale Number : @sale.SaleId
-                    Sold By : @sale.User
-                    Customer : @sale.Customer
-                    Sale Date :@sale.SaleDate
+<div class="p-3 m-2">
+    <form asp-action="Index" method="post">
+        <label asp-for="FullName" class="form-label">Customer</label>
+        <select asp-for="CustomerId"
+                class="form-control"
+                asp-items="@(new SelectList(ViewBag.CustomerList,"CustomerId","FullName"))"></select>
+        <input id="search" type="submit" value="View Bills" class="btn btn-dark m-3" />
+    </form>
+</div>
+
+@if (ViewBag.Sales != null)
+{
+    <div class=" p-2 m-2">
+        @foreach (var sale in ViewBag.Sales)
+        {
+            <div class="p-3 mb-5  border">
+                <div class="d-flex flex-column justify-content-start m-2" style="text-align:start">
+                    <div class="p-1">
+                        <b>Sale Number</b> : @sale.SaleId
+                    </div>
+                    <div class="p-1">
+                        <b>Sold By</b> : @sale.User
+                    </div>
+                    <div class="p-1">
+                        <b>Customer</b> : @sale.Customer
+                    </div>
+                    <div class="p-1">
+                        <b>Sale Date</b> :@sale.SaleDate
+                    </div>
                 </div>
                 <div>
-                    <table class="talbe table-responsive">
+                    <table class="table mt-3">
                         <tr>
                             <th>Item Name</th>
                             <th>Price</th>
@@ -51,18 +59,17 @@
                 </div>
                 <div style="text-align:end">
                     <p>Sale Total : @sale.SaleTotal</p>
-                </div>                
+                </div>
             </div>
-                
-            }
-        </div>
-    }
-    else
-    {
-        <div>
-            <p>
-                @ViewBag.NoData
-            </p>
-        </div>
-    }
-</div>
+
+        }
+    </div>
+}
+else
+{
+    <div>
+        <p>
+            @ViewBag.NoData
+        </p>
+    </div>
+}
