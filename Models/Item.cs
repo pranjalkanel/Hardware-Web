@@ -27,8 +27,10 @@ namespace HardwareWeb.Models
         [Column("description")]
         public string Description { get; set; }
         [Column("price")]
+        [Range(1, int.MaxValue, ErrorMessage = "Price should be greater than 0")]
         public int Price { get; set; }
         [Column("quantity")]
+        [Range(1, int.MaxValue, ErrorMessage = "Quantity should be greater than 0")]
         public int Quantity { get; set; }
         [Column("category")]
         public int? Category { get; set; }

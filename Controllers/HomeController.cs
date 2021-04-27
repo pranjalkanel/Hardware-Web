@@ -6,18 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HardwareWeb.Models;
+using HardwareWeb.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using HardwareWeb.DataStores;
+using Microsoft.EntityFrameworkCore;
 
 namespace HardwareWeb.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly HardwareContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, HardwareContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [Authorize]
@@ -31,7 +35,14 @@ namespace HardwareWeb.Controllers
                 notification.ControllerMethodText = "LowStock";
                 ViewBag.Message = notification;
             }
-            return View();
+
+            DashViewModel dash = new DashViewModel();
+
+            dash.LastMonthItemsList = LastMonthItems();
+            dash.LongStockItemsList = TooLongStockItems();
+            dash.CustomerNoSaleList = InactiveCustomers();
+
+            return View(dash);
         }
 
         [Authorize]
@@ -62,6 +73,43 @@ namespace HardwareWeb.Controllers
             }
         }
 
+        public List<Item> TooLongStockItems()
+        {
 
+            string year = DateTime.Now.AddMonths(-6).ToString("yyyy");
+            string month = DateTime.Now.AddMonths(-6).ToString("MM");
+            string day = DateTime.Now.AddMonths(-6).ToString("dd");
+            //return _context.Items.Include(x => x.Stocks.Where(y => y.PurchaseDate < DateTime.Now.AddMonths(-6))).ToList();
+
+            return _context.Items.FromSqlRaw($"SELECT * FROM dbo.items WHERE item_id IN (SELECT item_id FROM dbo.stocks WHERE purchase_date < CAST('{year}{month}{day} 00:00:00.000' AS DATETIME) GROUP BY item_id)").ToList();
+
+        }
+
+        public List<Item> LastMonthItems()
+        {
+            string year = DateTime.Now.AddDays(-31).ToString("yyyy");
+            string month = DateTime.Now.AddDays(-31).ToString("MM");
+            string day = DateTime.Now.AddDays(-31).ToString("dd");
+            return _context.Items.FromSqlRaw("SELECT * FROM dbo.items WHERE item_id IN" +
+                "(SELECT item_id FROM dbo.sale_details WHERE sale_id IN " +
+                $"(SELECT sale_id FROM dbo.sales WHERE date < CAST('{year}{month}{day} 00:00:00.000' AS DATETIME)) GROUP BY item_id)").ToList();
+        }
+
+        public List<Customer> InactiveCustomers()
+        {
+            string year = DateTime.Now.AddDays(-31).ToString("yyyy");
+            string month = DateTime.Now.AddDays(-31).ToString("MM");
+            string day = DateTime.Now.AddDays(-31).ToString("dd");
+            //return _context.Customers.FromSqlRaw("SELECT c.customer_id, c.full_name, c.email, c.phone, c.address, c.membership FROM dbo.customers c " +
+            //    "INNER JOIN" +
+            //    "(SELECT customer_id, MAX(Date) as date FROM dbo.sales " +
+            //    "GROUP BY customer_id HAVING MAX(Date) < CAST('20210328 00:00:00.000' AS DATETIME)) " +
+            //    "AS aliastable ON c.customer_id = aliastable.customer_id; ").ToList();
+            return _context.Customers.FromSqlRaw("SELECT c.customer_id, c.full_name, c.email, c.phone, c.address, c.membership FROM dbo.customers c " +
+                "INNER JOIN" +
+                "(SELECT customer_id, MAX(Date) as date FROM dbo.sales " +
+                $"GROUP BY customer_id HAVING MAX(Date) < CAST('{year}{month}{day} 00:00:00.000' AS DATETIME)) " +
+                "AS aliastable ON c.customer_id = aliastable.customer_id ").ToList();
+        }
     }
 }

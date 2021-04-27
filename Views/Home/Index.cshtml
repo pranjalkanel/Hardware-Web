@@ -2,7 +2,35 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model HardwareWeb.ViewModels.DashViewModel
+
+<h1>Dashboard</h1>
+<hr />
+
+<div class="d-flex flex-column">
+    <div class="p-2 m-2">
+        <h3>Items not sold</h3>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>In Stock</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+
+
+            @foreach (var item in Model.LongStockItemsList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td><a class="btn btn-outline-danger m-1" asp-controller="Items" asp-action="Delete" asp-route-id="@item.ItemId">Delete</a></td>
+                </tr>
+             }
+                
+            </table>
+    </div>
 </div>
