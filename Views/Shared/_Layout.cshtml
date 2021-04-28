@@ -4,82 +4,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - HardwareWeb</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="~/https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Select 2 -->
+    <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/css/admin.css">
 </head>
-<body onload="showToast()">
-    @if ((await AuthorizationService.AuthorizeAsync(User, "StaffPolicy")).Succeeded)
-    {
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HardwareWeb</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Index">Items</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ItemCategories" asp-action="Index">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Memberships" asp-action="Index">Memberships</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CustomerHistory" asp-action="Index">Customer Bills</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="Logout">Logout</a>
-                            </li>
+
+
+
+<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" onload="showToast()">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <!--<div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="img/govt-logo.png" alt="SAS Logo" height="60" width="60">
+        </div>-->
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-dark bg-primary">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" asp-area="" asp-controller="Home" asp-action="Index" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item white mt-2">HARDWARE STORE</li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li><!-- /.fullscreen -->
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <div class="usermenu dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <ul>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "NormalUserPolicy")).Succeeded)
+                            {
+                                <li><a class="nav-link dropdown-item" asp-area="" asp-controller="Accounts" asp-action="Profile"><i>Profile</i></a></li>
+                            }
+                            <li><a class="nav-link dropdown-item" asp-area="" asp-controller="Accounts" asp-action="Logout"><i class="fa fa-power-off"></i> Logout</a></li>
                         </ul>
+
                     </div>
-                </div>
+                        </li><!-- /.user menu -->
+                    </ul>
             </nav>
-        </header>
-    }
-    <div class="container">
-        @if (ViewBag.Message != null)
-        {
-            <div id="notification" class="toast" data-autohide="false" style="position: absolute; top: 20px; right: 20px; min-width: 200px">
-                <div class="toast-header">
-                    <strong class="mr-auto">Message</strong>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="toast-body">
-                    @ViewBag.Message.MessageText <br />
-                    @if (ViewBag.Message.ControllerText != null){
-                        <a class="alert-link" asp-controller="@ViewBag.Message.ControllerText" asp-action="@ViewBag.Message.ControllerMethodText">View Items</a>
-                    }
-                </div>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
+                <span class="brand-text font-weight-light">Hardware Store</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar sidebar-dark-secondary" style="background-color: #292929;">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2 ">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i>
+                                <p>Customers <i class="right fas fa-angle-left"></i></p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="Customers" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Details</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="Memberships" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Memberships</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="CustomerHistory" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Billing History</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-wrench"></i>
+                                <p>Items <i class="right fas fa-angle-left"></i></p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="Items" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Details</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="ItemCategories" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Item Categories</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRolePolicy")).Succeeded)
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Users" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-address-book"></i>
+                                    <p>Staff</p>
+                                </a>
+                            </li>
+                        }
+
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Sales" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-credit-card "></i>
+                                <p>Sales</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav><!-- /.sidebar-menu -->
             </div>
-        }
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - HardwareWeb 
+            <!-- /.sidebar -->
+        </aside>
+        <!-- /aside -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+
+            <section class="content">
+                <div class="container-fluid p-5">
+                    @if (ViewBag.Message != null)
+                    {
+                        <div id="notification" class="toast" data-autohide="false" style="position: absolute; top: 40px; right: 30px; min-width: 200px">
+                            <div class="toast-header">
+                                <strong class="mr-auto">Message</strong>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="toast-body">
+                                @ViewBag.Message.MessageText <br />
+                                @if (ViewBag.Message.ControllerText != null)
+                                {
+                                    <a class="alert-link" asp-controller="@ViewBag.Message.ControllerText" asp-action="@ViewBag.Message.ControllerMethodText">View Items</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div><!--/. container-fluid -->
+            </section><!-- /.content -->
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-light">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - HardwareWeb
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- select2 js file -->
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+    <!-- custom js file -->
+    <script src="~/js/admin.js"></script>
+
+    <!-- PAGE PLUGINS -->
+    <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <!-- dashboard custom script  -->
+    <script src="~/js/dashboard.js"></script>
 
     <script>
         function showToast() {
@@ -87,6 +225,5 @@
         }
     </script>
     @RenderSection("Scripts", required: false)
-
 </body>
 </html>
